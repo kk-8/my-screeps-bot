@@ -32,7 +32,7 @@ export const loop = errorMapper(
             }, {
                 role: 'builder',
                 bodys: [MOVE,MOVE,MOVE, WORK,WORK,WORK, CARRY,CARRY,CARRY],
-                number: 2
+                number: 1
             }, {
                 role: 'upgrader',
                 bodys: [MOVE,MOVE,MOVE,MOVE, WORK,WORK,WORK,WORK, CARRY,CARRY,CARRY,CARRY],

@@ -1,4 +1,4 @@
-import { getTask } from "../role/task";
+import { taskPush } from "../role/taskpush";
 
 export const autoSpawningCreeps = {
     run: function (creepConfigs) {
@@ -18,20 +18,26 @@ export const autoSpawningCreeps = {
         if (arr.length < creepConfigs[0].number) {
             let newName = `${creepConfigs[0].role}` + Game.time;
             console.log(`Spawning new ${creepConfigs[0].role}:` + newName);
-            Game.spawns['Spawn1'].spawnCreep(creepConfigs[0].bodys, newName, { memory: { role: creepConfigs[0].role, 
-                                                                                         task: getTask(creepConfigs[0].role)
-                                                                                        }
-                                                                             });
+            Game.spawns['Spawn1'].spawnCreep(creepConfigs[0].bodys, newName, 
+                { 
+                    memory: { 
+                        role: creepConfigs[0].role, 
+                        task: taskPush(creepConfigs[0].role)
+                    }
+                });
         }else{
             for (let i = 1; i < creepConfigs.length; i++) {
                 let arr = _.filter(Game.creeps, (creep) => { return creep.memory.role === creepConfigs[i].role });
                 if (arr.length < creepConfigs[i].number && !Game.spawns['Spawn1'].spawning) {
                     let newName = `${creepConfigs[i].role}` + Game.time;
                     console.log(`Spawning new ${creepConfigs[i].role}:` + newName);
-                    Game.spawns['Spawn1'].spawnCreep(creepConfigs[i].bodys, newName, { memory: { role: creepConfigs[i].role,
-                                                                                                 task: getTask(creepConfigs[i].role) 
-                                                                                                } 
-                                                                                     });
+                    Game.spawns['Spawn1'].spawnCreep(creepConfigs[i].bodys, newName, 
+                        { 
+                            memory: { 
+                                role: creepConfigs[i].role,
+                                task: taskPush(creepConfigs[i].role) 
+                            } 
+                        });
                 }
             }
         }

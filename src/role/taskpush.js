@@ -1,5 +1,5 @@
 /** @param {String} role */
-export const getTask = (role)=> {
+export const taskPush = (role)=> {
     const room = Game.spawns['Spawn1'].room;
     let re;
     switch (role) {
@@ -15,15 +15,16 @@ export const getTask = (role)=> {
                     type: FIND_STRUCTURES,
                     filter: "structure_storage_nEmpty",
                     action: 'withdraw',
-                    parament: { withdraw: RESOURCE_ENERGY }
+                    parament: { withdraw: RESOURCE_ENERGY },
+                    done: "to_flagRest"
                 },
                 to: {
                     type: FIND_STRUCTURES,
                     filter: "structure_extension,spawn_nFull",
                     action: "transfer",
-                    parament: { transfer: RESOURCE_ENERGY }
+                    parament: { transfer: RESOURCE_ENERGY },
+                    done: "to_flagRest"
                 },
-                done: ''
             };
             break;
         case 'harvester':
@@ -38,15 +39,16 @@ export const getTask = (role)=> {
                     type: FIND_SOURCES_ACTIVE,
                     filter: null,
                     action: 'harvest',
-                    parament: null
+                    parament: null,
+                    done: "to_flagRest"
                 },
                 to: {
                     type: FIND_STRUCTURES,
                     filter: "structure_container_nFull",
                     action: "transfer",
-                    parament: { transfer: RESOURCE_ENERGY }
+                    parament: { transfer: RESOURCE_ENERGY },
+                    done: "transfer_terminal"
                 },
-                done: ''
             };                                     
             break;
         case 'builder':
@@ -61,15 +63,16 @@ export const getTask = (role)=> {
                     type: FIND_SOURCES_ACTIVE,
                     filter: null,
                     action: 'harvest',
-                    parament: null
+                    parament: null,
+                    done: "to_flagRest"
                 },
                 to: {
                     type: FIND_CONSTRUCTION_SITES,
                     filter: null,
                     action: "build",
-                    parament: null
+                    parament: null,
+                    done: "to_flagRest"
                 },
-                done: ''
             };
             break;
         case 'upgrader':
@@ -84,15 +87,16 @@ export const getTask = (role)=> {
                     type: FIND_SOURCES_ACTIVE,
                     filter: null,
                     action: 'harvest',
-                    parament: null
+                    parament: null,
+                    done: "to_flagRest"
                 },
                 to: {
                     type: "FIND_CONTROLLER",
                     filter: null,
                     action: "upgradeController",
-                    parament: null
+                    parament: null,
+                    done: "to_flagRest"
                 },
-                done: ''
             };
             break;
         case 'defender':
@@ -107,15 +111,16 @@ export const getTask = (role)=> {
                     type: FIND_HOSTILE_CREEPS,
                     filter: null,
                     action: 'attack',
-                    parament: null
+                    parament: null,
+                    done: "to_flagRest"
                 },
                 to: {
                     type: null,
                     filter: null,
                     action: null,
-                    parament: null
+                    parament: null,
+                    done: null
                 },
-                done: ''
             };
             break;
         case 'repairer':
@@ -130,15 +135,16 @@ export const getTask = (role)=> {
                     type: FIND_SOURCES_ACTIVE,
                     filter: null,
                     action: 'harvest',
-                    parament: null
+                    parament: null,
+                    done: "to_flagRest"
                 },
                 to: {
                     type: FIND_STRUCTURES,
                     filter: "structure_rampart,wall_hitMax/300",
                     action: "repair",
-                    parament: null
+                    parament: null,
+                    done: "to_flagRest"
                 },
-                done: ''
             };
             break;
         case 'carrier':
@@ -153,15 +159,16 @@ export const getTask = (role)=> {
                     type: FIND_STRUCTURES,
                     filter: "structure_container_nEmpty",
                     action: 'withdraw',
-                    parament: { withdraw: RESOURCE_ENERGY }
+                    parament: { withdraw: RESOURCE_ENERGY },
+                    done: "to_flagRest"
                 },
                 to: {
                     type: FIND_STRUCTURES,
                     filter: "structure_storage_nFull",
                     action: "transfer",
-                    parament: { transfer: RESOURCE_ENERGY }
+                    parament: { transfer: RESOURCE_ENERGY },
+                    done: "transfer_terminal"
                 },
-                done: ''
             };
             break;
         case 'guardTower':
@@ -176,15 +183,16 @@ export const getTask = (role)=> {
                     type: FIND_STRUCTURES,
                     filter: "structure_storage_nEmpty",
                     action: 'withdraw',
-                    parament: { withdraw: RESOURCE_ENERGY }
+                    parament: { withdraw: RESOURCE_ENERGY },
+                    done: "to_flagRest"
                 },
                 to: {
                     type: FIND_STRUCTURES,
                     filter: "structure_tower_nFull",
                     action: "transfer",
-                    parament: { transfer: RESOURCE_ENERGY }
+                    parament: { transfer: RESOURCE_ENERGY },
+                    done: "to_flagRest"
                 },
-                done: ''
             };
             break;
         case 'miner':
@@ -199,15 +207,16 @@ export const getTask = (role)=> {
                     type: FIND_MINERALS,
                     filter: null,
                     action: 'harvest',
-                    parament: null
+                    parament: null,
+                    done: "to_flagRest"
                 },
                 to: {
                     type: FIND_STRUCTURES,
                     filter: "structure_storage_nFull",
                     action: "transfer",
-                    parament: { transfer: RESOURCE_LEMERGIUM }
+                    parament: { transfer: RESOURCE_LEMERGIUM },
+                    done: "to_flagRest"
                 },
-                done: ''
             };
             break;
         default :
