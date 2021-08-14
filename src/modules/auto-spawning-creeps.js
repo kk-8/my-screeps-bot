@@ -1,4 +1,4 @@
-import { taskPush } from "../role/taskpush";
+import { taskPush } from "../task/taskpush";
 
 export const autoSpawningCreeps = {
     run: function (creepConfigs) {

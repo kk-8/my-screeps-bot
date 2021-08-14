@@ -1,4 +1,4 @@
-import { TaskPull } from "./taskpull";
+import { TaskPull } from "../task/taskpull";
 export const roleCreep = {
     run: (creep) => {
         const task = new TaskPull(creep);
