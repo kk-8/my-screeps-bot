@@ -158,16 +158,54 @@ export class TaskPull {
     }
 
     runDoneCode(doneStr) {
-    switch (doneStr) {
-        case 'to_flagRest':
-            this.creep.moveTo(this.flag);
-            break;
-        case 'transfer_terminal':
-            const terminal = this.creep.room.terminal;
-            if (this.creep.transfer(terminal, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                this.creep.moveTo(terminal);
-            }
-            break;
+        switch (doneStr) {
+            case 'to_flagRest':
+                this.creep.moveTo(this.flag);
+                break;
+            case 'transfer_terminal':
+                const terminal = this.creep.room.terminal;
+                if (this.creep.transfer(terminal, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    this.creep.moveTo(terminal);
+                }
+                break;
+        }
     }
-}
+
+    stateTo(str) {
+        // console.log('123');
+        let result;
+        switch (str) {
+            case 'fromTo':
+                result = (creep, source) => {
+                    if (creep.store.getCapacity() !== null) {
+                        if (creep.store.getFreeCapacity() == 0) {
+                            creep.memory.state = 'to';
+                        }
+                    }else {
+                        if (!source) {
+                            creep.memory.state = 'wait';
+                        }
+                    }
+                }
+                break;
+            case 'toTo':
+                result = (creep, target) => {
+                    if (target && creep.store.getCapacity() == null) {
+                        creep.memory.state = 'from';
+                    }else {
+                        creep.memory.state = 'wait';
+                    }
+                }
+                break;
+            case 'waitTo':
+                result = (source) => {
+                    if (source) {
+                        creep.memory.state = 'from';
+                    }
+                }
+                break;
+            default:
+                result = null;
+        }
+    }
 }

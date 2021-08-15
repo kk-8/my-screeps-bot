@@ -3,40 +3,68 @@ export const roleCreep = {
     run: (creep) => {
         const task = new TaskPull(creep);
 
-        if (task.isbuilding) {
-            if (creep.memory.building && creep.store[task.buildType] == 0) {
-                creep.memory.building = false;
-                creep.say('🔄 harvest');
-            } else
-                if (!creep.memory.building && creep.store.getFreeCapacity() == 0) {
-                    creep.memory.building = true;
-                    creep.say('🚧 build');
-                }
-        }
-        
-        if (!creep.memory.building) {
-            const source = task.source 
-            const action = task.fromAction 
+        const state = creep.memory.state;
+        if (state == undefined || state == 'from') {
+            const source = task.source;
+            const action = task.fromAction;
             if (source) {
                 if (action(creep) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(source);
                 }
-            }else {
-                task.runDoneCode(task.task.from.done);
             }
 
-        }else {
-            const target = task.target 
-            const action = task.toAction 
+            task.stateTo('fromTo')(creep, source);
+        }else if (state == 'to') {
+            const target = task.target;
+            const action = task.toAction;
             if (target) {
                 if (action(creep) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(target);
                 }
-            }else {
-                task.runDoneCode(task.task.to.done);
             }
-            
+
+            task.stateTo('toTo')(creep, target);
+        }else if (state == 'wait') {
+            if (creep.pos !== task.flag) {
+                creep.moveTo(task.flag);
+            }
+
+            const source = task.source;
+            task.stateTo('waitTo')(source);
         }
+
+
+
+        // switch (creep.memory.state) {
+        //     case undefined:
+        //     case 'from':
+        //         const source = task.source;
+        //         const action = task.fromAction;
+        //         if (source) {
+        //             if (action(creep) == ERR_NOT_IN_RANGE) {
+        //                 creep.moveTo(source);
+        //             }
+        //         }
+
+        //         task.stateTo('fromTo')(creep, source);
+        //         break;
+        //     case 'to':
+        //         const target = task.target;
+        //         const action = task.toAction;
+        //         if (target) {
+        //             if (action(creep) == ERR_NOT_IN_RANGE) {
+        //                 creep.moveTo(target);
+        //             }
+        //         } 
+
+        //         task.stateTo('toTo')(creep, target);
+        //         break;
+        //     case 'wait':
+        //         creep.moveTo(task.flag);
+
+        //         task.stateTo('waitTo')(source);
+        //         break;
+        // }
         
     }
 }
@@ -288,4 +316,38 @@ const buildType = task.building.resourceType;
         //             }
         //             break;
         //     }
+        // }
+
+
+
+        // if (task.isbuilding) {
+        //     if (creep.memory.building && creep.store[task.buildType] == 0) {
+        //         creep.memory.building = false;
+        //         creep.say('🔄 harvest');
+        //     } else
+        //         if (!creep.memory.building && creep.store.getFreeCapacity() == 0) {
+        //             creep.memory.building = true;
+        //             creep.say('🚧 build');
+        //         }
+        // }
+
+        // if (!creep.memory.building) {
+        //     const source = task.source 
+        //     const action = task.fromAction 
+        //     if (source) {
+        //         if (action(creep) == ERR_NOT_IN_RANGE) {
+        //             creep.moveTo(source);
+        //         }
+        //     }
+        // }else {
+        //     const target = task.target 
+        //     const action = task.toAction 
+        //     if (target) {
+        //         if (action(creep) == ERR_NOT_IN_RANGE) {
+        //             creep.moveTo(target);
+        //         }
+        //     }else {
+        //         task.runDoneCode(task.task.to.done);
+        //     }
+
         // }
