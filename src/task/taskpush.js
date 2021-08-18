@@ -11,20 +11,8 @@ export const taskPush = (role)=> {
                     isbuilding: true,
                     resourceType: RESOURCE_ENERGY
                 },
-                from: {
-                    type: FIND_STRUCTURES,
-                    filter: "structure_storage_nEmpty",
-                    action: 'withdraw',
-                    parament: { withdraw: RESOURCE_ENERGY },
-                    done: "to_flagRest"
-                },
-                to: {
-                    type: FIND_STRUCTURES,
-                    filter: "structure_extension,spawn_nFull",
-                    action: "transfer",
-                    parament: { transfer: RESOURCE_ENERGY },
-                    done: "to_flagRest"
-                },
+                from: withdraw_storage_energy,
+                to: transfer_extensionSpawn,
             };
             break;
         case 'harvester':
@@ -35,20 +23,8 @@ export const taskPush = (role)=> {
                     isbuilding: true,
                     resourceType: RESOURCE_ENERGY
                 },
-                from: {
-                    type: FIND_SOURCES_ACTIVE,
-                    filter: null,
-                    action: 'harvest',
-                    parament: null,
-                    done: "to_flagRest"
-                },
-                to: {
-                    type: FIND_STRUCTURES,
-                    filter: "structure_container_nFull",
-                    action: "transfer",
-                    parament: { transfer: RESOURCE_ENERGY },
-                    done: "transfer_terminal"
-                },
+                from: harvest_source_active,
+                to: transfer_contain,
             };                                     
             break;
         case 'builder':
@@ -59,20 +35,8 @@ export const taskPush = (role)=> {
                     isbuilding: true,
                     resourceType: RESOURCE_ENERGY
                 },
-                from: {
-                    type: FIND_SOURCES_ACTIVE,
-                    filter: null,
-                    action: 'harvest',
-                    parament: null,
-                    done: "to_flagRest"
-                },
-                to: {
-                    type: FIND_CONSTRUCTION_SITES,
-                    filter: null,
-                    action: "build",
-                    parament: null,
-                    done: "to_flagRest"
-                },
+                from: harvest_source_active,
+                to: build_constructionSites,
             };
             break;
         case 'upgrader':
@@ -83,20 +47,8 @@ export const taskPush = (role)=> {
                     isbuilding: true,
                     resourceType: RESOURCE_ENERGY
                 },
-                from: {
-                    type: FIND_SOURCES_ACTIVE,
-                    filter: null,
-                    action: 'harvest',
-                    parament: null,
-                    done: "to_flagRest"
-                },
-                to: {
-                    type: "FIND_CONTROLLER",
-                    filter: null,
-                    action: "upgradeController",
-                    parament: null,
-                    done: "to_flagRest"
-                },
+                from: harvest_source_active,
+                to: upgrade_Controller,
             };
             break;
         case 'defender':
@@ -107,20 +59,8 @@ export const taskPush = (role)=> {
                     isbuilding: false,
                     resourceType: null
                 },
-                from: {
-                    type: FIND_HOSTILE_CREEPS,
-                    filter: null,
-                    action: 'attack',
-                    parament: null,
-                    done: "to_flagRest"
-                },
-                to: {
-                    type: null,
-                    filter: null,
-                    action: null,
-                    parament: null,
-                    done: null
-                },
+                from: attack_hostileCreeps,
+                to: empty,
             };
             break;
         case 'repairer':
@@ -131,20 +71,8 @@ export const taskPush = (role)=> {
                     isbuilding: true,
                     resourceType: RESOURCE_ENERGY
                 },
-                from: {
-                    type: FIND_SOURCES_ACTIVE,
-                    filter: null,
-                    action: 'harvest',
-                    parament: null,
-                    done: "to_flagRest"
-                },
-                to: {
-                    type: FIND_STRUCTURES,
-                    filter: "structure_rampart,wall_hitMax/300",
-                    action: "repair",
-                    parament: null,
-                    done: "to_flagRest"
-                },
+                from: harvest_source_active,
+                to: repair_rampartWall_hitMax300,
             };
             break;
         case 'carrier':
@@ -155,20 +83,8 @@ export const taskPush = (role)=> {
                     isbuilding: true,
                     resourceType: RESOURCE_ENERGY
                 },
-                from: {
-                    type: FIND_STRUCTURES,
-                    filter: "structure_container_nEmpty",
-                    action: 'withdraw',
-                    parament: { withdraw: RESOURCE_ENERGY },
-                    done: "to_flagRest"
-                },
-                to: {
-                    type: FIND_STRUCTURES,
-                    filter: "structure_storage_nFull",
-                    action: "transfer",
-                    parament: { transfer: RESOURCE_ENERGY },
-                    done: "transfer_terminal"
-                },
+                from: withdraw_container_energy,
+                to: transfer_storage_energy,
             };
             break;
         case 'guardTower':
@@ -179,20 +95,8 @@ export const taskPush = (role)=> {
                     isbuilding: true,
                     resourceType: RESOURCE_ENERGY
                 },
-                from: {
-                    type: FIND_STRUCTURES,
-                    filter: "structure_storage_nEmpty",
-                    action: 'withdraw',
-                    parament: { withdraw: RESOURCE_ENERGY },
-                    done: "to_flagRest"
-                },
-                to: {
-                    type: FIND_STRUCTURES,
-                    filter: "structure_tower_nFull",
-                    action: "transfer",
-                    parament: { transfer: RESOURCE_ENERGY },
-                    done: "to_flagRest"
-                },
+                from: withdraw_storage_energy,
+                to: transfer_tower,
             };
             break;
         case 'miner':
@@ -203,44 +107,130 @@ export const taskPush = (role)=> {
                     isbuilding: true,
                     resourceType: RESOURCE_LEMERGIUM
                 },
-                from: {
-                    type: FIND_MINERALS,
-                    filter: null,
-                    action: 'harvest',
-                    parament: null,
-                    done: "to_flagRest"
-                },
-                to: {
-                    type: FIND_STRUCTURES,
-                    filter: "structure_storage_nFull",
-                    action: "transfer",
-                    parament: { transfer: RESOURCE_LEMERGIUM },
-                    done: "to_flagRest"
-                },
+                from: harvest_mine,
+                to: transfer_storage_lemergium,
             };
             break;
         default :
     }
     return re;
 }
-/**
- * re = {
-    originRoom: room,  //起始房间
-    targetRoom: room,  //任务房间
-    building: {
-        isbuilding: true,               //是否需要状态转化
-        resourceType: RESOURCE_ENERGY  //依据存储的类型资源进行转化
-    },
-    from: {
-        type: FIND_SOURCES_ACTIVE,          //任务一目标类型
-        filter: [null, null]            //[0]FIND_STRUCTURES类型中.filter()的回调函数，
-    },                                   //[1].withdraw()方法中的类型参数
-    to: {
-        type: FIND_STRUCTURES,                     //任务二目标类型
-        filter: [() => { }, false, RESOURCE_ENERGY]  //[0]FIND_STRUCTURES类型中.filter()的回调函数
-    },                                          //[1]true : repaire(); false : transfer(),[2].transfer()方法中的类型参数
-    done: {
-        filter: [true, RESOURCE_ENERGY]      //[0]true : 把多余的能量放进terminal中; false : 回到flag处
-    }                                      //[1].transfer()方法中的类型参数
+
+const harvest_source_active = {
+    type: FIND_SOURCES_ACTIVE,
+    filter: null,
+    action: 'harvest',
+    parament: null,
+    done: "to_flagRest"
 };
- */
+
+const harvest_mine = {
+    type: FIND_MINERALS,
+    filter: null,
+    action: 'harvest',
+    parament: null,
+    done: "to_flagRest"
+};
+
+const transfer_storage_energy = {
+    type: FIND_STRUCTURES,
+    filter: "structure_storage_nFull",
+    action: "transfer",
+    parament: { transfer: RESOURCE_ENERGY },
+    done: "transfer_terminal"
+};
+
+const transfer_storage_lemergium = {
+    type: FIND_STRUCTURES,
+    filter: "structure_storage_nFull",
+    action: "transfer",
+    parament: { transfer: RESOURCE_LEMERGIUM },
+    done: "to_flagRest"
+};
+
+const transfer_extensionSpawn = {
+    type: FIND_STRUCTURES,
+    filter: "structure_extension,spawn_nFull",
+    action: "transfer",
+    parament: { transfer: RESOURCE_ENERGY },
+    done: "to_flagRest"
+};
+
+const transfer_contain = {
+    type: FIND_STRUCTURES,
+    filter: "structure_container_nFull",
+    action: "transfer",
+    parament: { transfer: RESOURCE_ENERGY },
+    done: "transfer_terminal"
+};
+
+const transfer_tower = {
+    type: FIND_STRUCTURES,
+    filter: "structure_tower_nFull",
+    action: "transfer",
+    parament: { transfer: RESOURCE_ENERGY },
+    done: "to_flagRest"
+};
+
+const withdraw_storage_energy = {
+    type: FIND_STRUCTURES,
+    filter: "structure_storage_nEmpty",
+    action: 'withdraw',
+    parament: { withdraw: RESOURCE_ENERGY },
+    done: "to_flagRest"
+};
+
+const withdraw_container_energy = {
+    type: FIND_STRUCTURES,
+    filter: "structure_container_nEmpty",
+    action: 'withdraw',
+    parament: { withdraw: RESOURCE_ENERGY },
+    done: "to_flagRest"
+};
+
+const build_constructionSites = {
+    type: FIND_CONSTRUCTION_SITES,
+    filter: null,
+    action: "build",
+    parament: null,
+    done: "to_flagRest"
+};
+
+const upgrade_Controller = {
+    type: "FIND_CONTROLLER",
+    filter: null,
+    action: "upgradeController",
+    parament: null,
+    done: "to_flagRest"
+};
+
+const attack_hostileCreeps = {
+    type: FIND_HOSTILE_CREEPS,
+    filter: null,
+    action: 'attack',
+    parament: null,
+    done: "to_flagRest"
+};
+
+const repair_rampartWall_hitMax300 = {
+    type: FIND_STRUCTURES,
+    filter: "structure_rampart,wall_hitMax/300",
+    action: "repair",
+    parament: null,
+    done: "to_flagRest"
+};
+
+const empty = {
+    type: null,
+    filter: null,
+    action: null,
+    parament: null,
+    done: null
+};
+
+// re = {
+//     type: FIND_HOSTILE_CREEPS,
+//     filter: null,
+//     action: 'attack',
+//     parament: null,
+// }

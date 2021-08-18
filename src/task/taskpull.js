@@ -8,10 +8,11 @@ export class TaskPull {
         this.isbuilding = this.task.building.isbuilding;
         this.buildType = this.task.building.resourceType;
     }
+
     get source() {
         let source;
         const fromType = this.task.from.type;
-        const filterFu = this.getFilter(this.task.from.filter);
+        const filterFu = getFilter(this.task.from.filter);
 
         switch (fromType) {
             case FIND_SOURCES_ACTIVE:
@@ -35,7 +36,7 @@ export class TaskPull {
     get target() {
         let target;
         const toType = this.task.to.type;
-        const filterFu = this.getFilter(this.task.to.filter);
+        const filterFu = getFilter(this.task.to.filter);
 
         switch (toType) {
             case FIND_CONSTRUCTION_SITES:
@@ -98,65 +99,10 @@ export class TaskPull {
         return result;
     }
 
-    getFilter(filter) {
-        let resoult;
-        switch (filter) {
-            case "structure_storage_nFull":
-                resoult = (structure) => {
-                    return (structure.structureType == STRUCTURE_STORAGE)
-                        && structure.store.getFreeCapacity() > 0;
-                }
-                break;
-            case "structure_storage_nEmpty":
-                resoult = (structure) => {
-                    return (structure.structureType == STRUCTURE_STORAGE)
-                        && structure.store[RESOURCE_ENERGY] > 0;
-                }
-                break;
-            case "structure_container_nFull":
-                resoult = (structure) => {
-                    return (structure.structureType == STRUCTURE_CONTAINER)
-                        && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
-                }
-                break;
-            case "structure_container_nEmpty":
-                resoult = (structure) => {
-                    return (structure.structureType == STRUCTURE_CONTAINER)
-                        && structure.store[RESOURCE_ENERGY] > 0;
-                }
-                break;
-            case "structure_extension,spawn_nFull":
-                resoult = (structure) => {
-                    return (structure.structureType == STRUCTURE_EXTENSION
-                        || structure.structureType == STRUCTURE_SPAWN)
-                        && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
-                }
-                break;
-            case "structure_rampart,wall_hitMax/300":
-                resoult = (structure) => {
-                    return (structure.structureType == STRUCTURE_RAMPART
-                        || structure.structureType == STRUCTURE_WALL
-                    ) && structure.hits < structure.hitsMax / 300;
-                }
-                break;
-            case "structure_tower_nFull":
-                resoult = (structure) => {
-                    return (structure.structureType == STRUCTURE_TOWER)
-                        && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
-                }
-                break;
-            case "structure_terminal_nFull":
-                resoult = (structure) => {
-                    return (structure.structureType == STRUCTURE_TERMINAL)
-                        && structure.store.getFreeCapacity() > 0;
-                }
-                break;
-            default:
-                resoult = null;
-        }
-        return resoult;
+    get roomName() {
+        return '';
     }
-
+//在done状态下运行的代码
     runDoneCode(doneStr) {
         switch (doneStr) {
             case 'to_flagRest':
@@ -170,42 +116,336 @@ export class TaskPull {
                 break;
         }
     }
+}
 
-    stateTo(str) {
-        // console.log('123');
-        let result;
-        switch (str) {
-            case 'fromTo':
-                result = (creep, source) => {
-                    if (creep.store.getCapacity() !== null) {
-                        if (creep.store.getFreeCapacity() == 0) {
-                            creep.memory.state = 'to';
-                        }
-                    }else {
-                        if (!source) {
-                            creep.memory.state = 'wait';
-                        }
-                    }
-                }
-                break;
-            case 'toTo':
-                result = (creep, target) => {
-                    if (target && creep.store.getCapacity() == null) {
-                        creep.memory.state = 'from';
-                    }else {
-                        creep.memory.state = 'wait';
-                    }
-                }
-                break;
-            case 'waitTo':
-                result = (source) => {
-                    if (source) {
-                        creep.memory.state = 'from';
-                    }
-                }
-                break;
-            default:
-                result = null;
-        }
+//获取structure对象时需要的filter函数
+function getFilter(filter) {
+    let resoult;
+    switch (filter) {
+        case "structure_storage_nFull":
+            resoult = (structure) => {
+                return (structure.structureType == STRUCTURE_STORAGE)
+                    && structure.store.getFreeCapacity() > 0;
+            }
+            break;
+        case "structure_storage_nEmpty":
+            resoult = (structure) => {
+                return (structure.structureType == STRUCTURE_STORAGE)
+                    && structure.store[RESOURCE_ENERGY] > 0;
+            }
+            break;
+        case "structure_container_nFull":
+            resoult = (structure) => {
+                return (structure.structureType == STRUCTURE_CONTAINER)
+                    && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+            }
+            break;
+        case "structure_container_nEmpty":
+            resoult = (structure) => {
+                return (structure.structureType == STRUCTURE_CONTAINER)
+                    && structure.store[RESOURCE_ENERGY] > 0;
+            }
+            break;
+        case "structure_extension,spawn_nFull":
+            resoult = (structure) => {
+                return (structure.structureType == STRUCTURE_EXTENSION
+                    || structure.structureType == STRUCTURE_SPAWN)
+                    && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+            }
+            break;
+        case "structure_rampart,wall_hitMax/300":
+            resoult = (structure) => {
+                return (structure.structureType == STRUCTURE_RAMPART
+                    || structure.structureType == STRUCTURE_WALL
+                ) && structure.hits < structure.hitsMax / 300;
+            }
+            break;
+        case "structure_tower_nFull":
+            resoult = (structure) => {
+                return (structure.structureType == STRUCTURE_TOWER)
+                    && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+            }
+            break;
+        case "structure_terminal_nFull":
+            resoult = (structure) => {
+                return (structure.structureType == STRUCTURE_TERMINAL)
+                    && structure.store.getFreeCapacity() > 0;
+            }
+            break;
+        default:
+            resoult = null;
     }
+    return resoult;
+}
+
+//creep运行完指令后进行的状态检查
+function stateCheck(role, curState) {
+    let resoult
+    switch (role) {
+        case 'harvester':
+            harvesterState(curState);
+            break;
+        case 'builder':
+            builderState(curState);
+            break;
+        case 'upgrader':
+            upgraderState(curState);
+            break;
+        case 'repairer':
+            repairerState(curState);
+            break;
+        case 'carrier':
+            carrierState(curState);
+            break;
+        case 'defender':
+            defenderState(curState);
+            break;
+    }
+}
+
+//用于记录发配的任务，以便于实现每3个harvester有一个是miner；
+
+function harvesterState(curState) {
+    let r;
+    switch (curState) {
+        case 'collect_energy':
+            r = (creep, source) => {
+                if (creep.store.getFreeCapacity() == 0) {
+                    setState(creep, 'save_energy');
+                }
+            };
+            break;
+        case 'save_energy':
+            r = (creep, source) => {
+                if (creep.store.getUsedCapacity() == 0) {
+                    setState(creep, 'collect_energy');
+                }
+            };
+            break;
+        case 'collect_mine':
+            r = (creep, source) => {
+                if (creep.memory.mine) {
+                    if (creep.store.getFreeCapacity() == 0) {
+                        setState(creep, 'save_mine');
+                    }
+                } else {
+                    setState(creep, 'mine_check');
+                }
+            };
+            break;
+        case 'save_mine':
+            r = (creep, source) => {
+                if (creep.store.getUsedCapacity() == 0) {
+                    setState(creep, 'collect_mine');
+                }
+            };
+            break;
+        case 'mine_check':
+            r = (creep, source) => {
+                setState(creep, creep.memory.lastState);
+            };
+            break;
+        case 'wait':
+            r = (creep, source) => {
+                if (Game.rooms[creep.memory.room].memory['counter']%3 == 1) { //待定
+                    setState(creep, 'collect_energy');
+                } else {
+                    setState(creep, 'collect_mine');
+                }
+            };
+            break;
+    }
+    return r;
+}
+
+function builderState(curState) {
+    let r;
+    switch (curState) {
+        case 'collect_energy':
+            r = (creep, source) => {
+                if (creep.store.getFreeCapacity() == 0) {
+                    setState(creep, 'build_sites');
+                } else if (!source) {
+                    setState(creep, 'wait');
+                }
+            };
+            break;
+        case 'build_sites':
+            r = (creep, source) => {
+                if (creep.store.getUsedCapacity() == 0) {
+                    setState(creep, 'collect_energy');
+                } else if (!source && creep.store.getUsedCapacity() !== 0) {
+                    setState(creep, 'repair_rampartWall_hitMax300');
+                }
+            };
+            break;
+        case 'upgrade_controller':
+            r = (creep, source) => {
+                if (!source && creep.store.getUsedCapacity() !== 0) {
+                    setState(creep, 'wait');
+                }
+            };
+            break;
+        case 'repair_rampartWall_hitMax300':
+            r = (creep, source) => {
+                if (!source && creep.store.getUsedCapacity() !== 0) {
+                    setState(creep, 'upgrade_controller');
+                }
+            };
+            break;
+        case 'wait':
+            r = (creep, source) => {
+                if (source) {
+                    setState(creep, 'collect_energy');
+                }
+            };
+            break;
+    }
+    return r;
+}
+
+function upgraderState(curState) {
+    let r;
+    switch (curState) {
+        case 'collect_energy':
+            r = (creep, source) => {
+                if (creep.store.getFreeCapacity() == 0) {
+                    setState(creep, 'upgrade_controller');
+                } else if (!source) {
+                    setState(creep, 'wait');
+                }
+            }
+            break;
+        case 'upgrade_controller':
+            r = (creep, source) => {
+                if (creep.store.getUsedCapacity() == 0) {
+                    setState(creep, 'collect_energy');
+                } else if (!source) {
+                    setState(creep, 'wait');
+                }
+            }
+            break;
+        case 'wait':
+            r = (creep, source) => {
+                if (source) {
+                    setState(creep, 'collect_energy');
+                }
+            }
+            break;
+    }
+    return r;
+}
+
+function repairerState(curState) {
+    let r;
+    switch (curState) {
+        case 'collect_energy':
+            r = (creep, source) => {
+                if (creep.store.getFreeCapacity() == 0) {
+                    setState(creep, 'repair_rampartWall_hitMax300');
+                } else if (!source) {
+                    setState(creep, 'wait');
+                }
+            }
+            break;
+        case 'repair_rampartWall_hitMax300':
+            r = (creep, source) => {
+                if (creep.store.getUsedCapacity() == 0) {
+                    setState(creep, 'collect_energy');
+                } else if (!source && creep.store.getUsedCapacity() !== 0) {
+                    setState(creep, 'build_sites');
+                }
+            }
+            break;
+        case 'build_sites':
+            r = (creep, source) => {
+                if (creep.store.getUsedCapacity() == 0) {
+                    setState(creep, 'collect_energy');
+                } else if (!source) {
+                    setState(creep, 'wait');
+                }
+            }
+            break;
+        case 'wait':
+            r = (creep, source) => {
+                if (source) {
+                    setState(creep, 'collect_energy');
+                }
+            }
+            break;
+    }
+    return r;
+}
+
+function carrierState(curState) {
+    let r;
+    switch (curState) {
+        case 'withdraw_container_energy':
+            r = (creep, source) => {
+                if (creep.store.getFreeCapacity() == 0) {
+                    setState(creep, 'transfer_storage_energy');
+                } else if (!source) {
+                    setState(creep, 'withdraw_storage_energy');
+                }
+            }
+            break;
+        case 'withdraw_container_mine':
+            r = (creep, source) => { }
+            break;
+        case 'withdraw_storage_energy':
+            r = (creep, source) => {
+                if (creep.store.getFreeCapacity() == 0) {
+                    setState(creep, 'transfer_extensionSpawn');
+                } else if (!source) {
+                    setState(creep, 'wait');
+                }
+            }
+            break;
+        case 'withdraw_storage_mine':
+            r = (creep, source) => { }
+            break;
+        case 'transfer_storage_energy':
+            r = (creep, source) => {
+                if (creep.store.getUsedCapacity() == 0) {
+                    setState(creep, 'withdraw_container_energy');
+                } else if (!source) {
+                    setState(creep, 'wait');
+                }
+            }
+            break;
+        case 'transfer_tower_energy':
+            r = (creep, source) => {
+                if (creep.store.getUsedCapacity() == 0) {
+                    setState(creep, 'withdraw_storage_energy');
+                } else if (!source && creep.store.getUsedCapacity() !== 0) {
+                    setState(creep, 'wait');
+                }
+            }
+            break;
+        case 'transfer_extensionSpawn':
+            r = (creep, source) => {
+                if (creep.store.getUsedCapacity() == 0) {
+                    setState(creep, 'withdraw_storage_energy');
+                } else if (!source && creep.store.getUsedCapacity() !== 0) {
+                    setState(creep, 'transfer_tower_energy');
+                }
+            }
+            break;
+        case 'wait':
+            r = (creep, source) => {
+                if (source) {
+                    setState(creep, 'withdraw_container_energy');
+                }
+            }
+            break;
+
+    }
+    return r;
+}
+
+function defenderState(curState) { }
+
+function setState(creep, str) {
+    creep.memory.lastState = creep.memory.state;
+    creep.memory.state = str;
 }

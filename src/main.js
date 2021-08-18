@@ -18,7 +18,7 @@ export const loop = errorMapper(
                 number: 3
             }, {
                 role: 'harvester',
-                bodys: [MOVE,MOVE, WORK,WORK,WORK,WORK,WORK,WORK,WORK, CARRY],
+                bodys: [MOVE, MOVE, WORK,WORK,WORK,WORK,WORK,WORK,WORK, CARRY],
                 number: 2
             }, {
                 role: 'builder',
@@ -50,7 +50,7 @@ export const loop = errorMapper(
                 number: 1
             }
         ];
-        autoSpawningCreeps.run(creepConfigs);
+        autoSpawningCreeps.run();
         roleTower.run();
         roleLink.run();
         roleTerminal.run();
@@ -72,23 +72,3 @@ export const loop = errorMapper(
 
 
 
-
-// if (creep.memory.role == 'guardSpawn') {
-            //     guardSpawn.run(creep);
-            // } else if (creep.memory.role == 'harvester') {
-            //     roleHarvester.run(creep);
-            // } else if (creep.memory.role == 'upgrader') {
-            //     roleUpGrader.run(creep);
-            // } else if (creep.memory.role == 'builder') {
-            //     roleBuilder.run(creep);
-            // } else if (creep.memory.role == 'defender') {
-            //     roleDefender.run(creep);
-            // } else if (creep.memory.role == 'repairer') {
-            //     roleRepairer.run(creep);
-            // } else if (creep.memory.role == 'carrier') {
-            //     roleCarrier.run(creep);
-            // } else if (creep.memory.role == 'guardTower') {
-            //     guardTower.run(creep);
-            // } else if (creep.memory.role == 'miner') {
-            //     miner.run(creep);
-            // }
