@@ -1,0 +1,37 @@
+{
+    "W7N14": [
+        {
+            "role": "carrier",
+            "bodys": ["move","move","move","move","move", "move","move","move","move","move",
+                "carry","carry","carry","carry","carry", "carry","carry","carry","carry","carry" ],
+            "number": 2
+        },
+        {
+            "role": "harvester",
+            "bodys": ["move", "move", "move", "work", "work", "work", "work", "work", "work", "work", "work", "carry"],
+            "number": 3
+        },
+        {
+            "role": "builder",
+            "bodys": ["move", "move", "move", "work", "work", "work", "carry", "carry", "carry"],
+            "number": 1
+        },
+        {
+            "role": "upgrader",
+            "bodys": ["move", "move", "move", "work", "work", "work", "work", "work", "work", "work", "work", "work", "work", "carry", "carry" ],
+            "number": 2
+        },
+        {
+            "role": "repairer",
+            "bodys": ["move", "move", "move", "work", "work", "work", "carry", "carry", "carry"],
+            "number": 1
+        },
+        {
+            "role": "defender",
+            "bodys": ["move", "move", "move", "move", "move", "move", "move", "move", "move", "move",
+                "attack", "attack", "attack", "attack", "attack", "attack", "attack", "attack", "tough", 
+                "tough", "tough", "tough", "tough", "tough" ],
+            "number": 1
+        }
+    ]
+}

@@ -4,6 +4,7 @@ import commonjs from '@rollup/plugin-commonjs'
 import clear from 'rollup-plugin-clear'
 import screeps from 'rollup-plugin-screeps'
 import copy from 'rollup-plugin-copy'
+import json from '@rollup/plugin-json'
 
 let config
 // 根据指定的目标获取对应的配置项
@@ -42,6 +43,7 @@ export default {
         sourcemap: true
     },
     plugins: [
+        json(),
         // 清除上次编译成果
         clear({ targets: ["dist"] }),
         // 打包依赖

@@ -1,7 +1,8 @@
+import { taskPush } from "./taskpush";
 export class TaskPull {
     constructor(creep) {
         this.creep = creep;
-        this.task = creep.memory.task;
+        this.task = taskPush(creep.memory.role);
         this.originRoom = this.task.originRoom;
         this.targetRoom = this.task.targetRoom;
         this.flag = Game.flags[`${this.originRoom.name}_rest`];
@@ -132,6 +133,18 @@ function getFilter(filter) {
             resoult = (structure) => {
                 return (structure.structureType == STRUCTURE_STORAGE)
                     && structure.store[RESOURCE_ENERGY] > 0;
+            }
+            break;
+        case "structure_storage_energyNoOver5":
+            resoult = (structure) => {
+                return (structure.structureType == STRUCTURE_STORAGE)
+                    && structure.store.getUsedCapacity(RESOURCE_ENERGY) < structure.store.getCapacity() * 0.5;
+            }
+            break;
+        case "structure_storage_mineNoOver3":
+            resoult = (structure) => {
+                return (structure.structureType == STRUCTURE_STORAGE)
+                    && structure.store.getUsedCapacity(RESOURCE_LEMERGIUM) < structure.store.getCapacity() * 0.3;
             }
             break;
         case "structure_container_nFull":

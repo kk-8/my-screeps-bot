@@ -134,7 +134,7 @@ const harvest_mine = {
 
 const transfer_storage_energy = {
     type: FIND_STRUCTURES,
-    filter: "structure_storage_nFull",
+    filter: "structure_storage_energyNoOver5",
     action: "transfer",
     parament: { transfer: RESOURCE_ENERGY },
     done: "transfer_terminal"
@@ -142,7 +142,7 @@ const transfer_storage_energy = {
 
 const transfer_storage_lemergium = {
     type: FIND_STRUCTURES,
-    filter: "structure_storage_nFull",
+    filter: "structure_storage_mineNoOver3",
     action: "transfer",
     parament: { transfer: RESOURCE_LEMERGIUM },
     done: "to_flagRest"
