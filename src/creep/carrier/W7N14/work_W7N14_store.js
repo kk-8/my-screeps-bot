@@ -14,12 +14,14 @@ export const work_W7N14_store = (creep) => {
 //状态1-------------
 function work_get(creep) {
     const link = Game.getObjectById('6106280b9d8d18d2781afa21'); //storage旁边的link
-    const source = link.store.getUsedCapacity(RESOURCE_ENERGY) == 0 ? null : link;
+    let source = link.store.getUsedCapacity(RESOURCE_ENERGY) == 0 ? null : link;
     if (source) {
         if (creep.withdraw(source, typeCheck(source)) == ERR_NOT_IN_RANGE) {
             creep.moveTo(source);
         }
     }
+
+    source = link.store.getUsedCapacity(RESOURCE_ENERGY) == 0 ? null : link;
     stateCheck('get', creep, source);
 }
 //状态2-----------------
@@ -45,7 +47,7 @@ function stateCheck(curState, creep, source) {
             if (creep.store.getFreeCapacity() == 0) {
                 setState(creep, 'put');
             }else if (!source) {
-                setJob(creep, 'W7N13_store');
+               jobBack(creep);
             }
             break;
         case 'put':
@@ -69,6 +71,7 @@ function setJob(creep, job) {
 function jobBack(creep) {
     creep.memory.job = creep.memory.originJob;
     creep.memory.state = 'wait';
+    creep.memory.lastState = null;
 }
 
 //判断job

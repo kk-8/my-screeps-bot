@@ -13,16 +13,11 @@ export const work_W7N14_build = (creep) => {
 
 //状态1-------------
 function work_get(creep) {
-    if (creep.room.name == 'W7N14') {
         const source = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
         if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
             creep.moveTo(source);
         }
-        stateCheck('get', creep, source);
-    }else {
-        creep.moveTo(new RoomPosition(25, 25, 'W7N14'));
-    }
-    
+        stateCheck('get', creep, source);    
 }
 //状态2-----------------
 function work_put(creep) {
@@ -57,7 +52,7 @@ function stateCheck(curState, creep, source) {
             if (creep.store.getUsedCapacity() == 0) {
                 setState(creep, 'get');
             }else if (!source) {
-                setJob(creep, 'W7N14_upgrade');
+                setJob(creep, 'W7N14_repair');
             }
             break;
     }

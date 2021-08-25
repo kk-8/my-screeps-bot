@@ -1,4 +1,4 @@
-export const work_W7N14_upgrade = (creep) => {
+export const work_W7N13_repair = (creep) => {
     const state = creep.memory.state;
     switch (state) {
         case 'wait':
@@ -13,21 +13,29 @@ export const work_W7N14_upgrade = (creep) => {
 
 //状态1-------------
 function work_get(creep) {
-    const source = creep.room.controller.pos.findClosestByRange(FIND_STRUCTURES, { filter: { structureType: STRUCTURE_LINK } });
-    if (creep.withdraw(source, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-        creep.moveTo(source);
+    if (creep.room.name == 'W7N14') {
+        const source = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
+        if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(source);
+        }
+
+        stateCheck('get', creep, source);
+    } else {
+        creep.moveTo(new RoomPosition(25, 25, 'W7N14'));
     }
-    stateCheck('get', creep, source);
 }
 //状态2-----------------
 function work_put(creep) {
-    const target = creep.room.controller;
-    if (target) {
-        if (creep.upgradeController(target) == ERR_NOT_IN_RANGE) {
+    if(creep.room.name == 'W7N13') {
+        const target = creep.pos.findClosestByRange(FIND_STRUCTURES, { filter: (s) => s.hits < s.hitsMax });
+        if (creep.repair(target) == ERR_NOT_IN_RANGE) {
             creep.moveTo(target);
         }
+
+        stateCheck('put', creep, target);
+    }else {
+        creep.moveTo(new RoomPosition(25, 25, 'W7N13'));
     }
-    stateCheck('put', creep, target);
 }
 //状态检查
 function stateCheck(curState, creep, source) {
@@ -35,12 +43,13 @@ function stateCheck(curState, creep, source) {
         case 'get':
             if (creep.store.getFreeCapacity() == 0) {
                 setState(creep, 'put');
-            }
+            } 
             break;
         case 'put':
             if (creep.store.getUsedCapacity() == 0) {
-                jobBack(creep);
-                
+                setState(creep, 'get');
+            }else if (!source) {
+                setJob(creep, 'W7N14_repair');
             }
             break;
     }
@@ -63,5 +72,5 @@ function jobBack(creep) {
 
 //判断job
 function isSelfJob(creep) {
-    return creep.memory.originJob == 'W7N14_upgrader';
+    return creep.memory.originJob == 'W7N13_repair';
 }

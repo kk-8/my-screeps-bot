@@ -1,7 +1,6 @@
 import plan from "./plan.json"
 import { work_W7N14_build } from "./W7N14/work_W7N14_build";
-import { work_W7N14_upgrade } from "./W7N14/work_W7N14_upgrade";
-
+import { work_W7N14_repair } from "./W7N14/work_W7N14_repair";
 export const roleBuilder = {
     run: (creep) => {
         const roomName = creep.memory.room;
@@ -25,8 +24,8 @@ function do_W7N14_job(creep) {
         case 'W7N14_build':
             work_W7N14_build(creep);
             break;
-        case 'W7N14_upgrade':
-            work_W7N14_upgrade(creep);
+        case 'W7N14_repair':
+            work_W7N14_repair(creep);
             break;
     }
 }

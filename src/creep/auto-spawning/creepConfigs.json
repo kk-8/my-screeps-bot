@@ -4,12 +4,12 @@
             "role": "carrier",
             "bodys": ["move","move","move","move","move", "move","move","move","move","move",
                 "carry","carry","carry","carry","carry", "carry","carry","carry","carry","carry" ],
-            "number": 2
+            "number": 1
         },
         {
             "role": "harvester",
             "bodys": ["move", "move", "move", "work", "work", "work", "work", "work", "work", "work", "work", "carry"],
-            "number": 3
+            "number": 2
         },
         {
             "role": "builder",
@@ -18,20 +18,20 @@
         },
         {
             "role": "upgrader",
-            "bodys": ["move", "move", "move", "work", "work", "work", "work", "work", "work", "work", "work", "work", "work", "carry", "carry" ],
-            "number": 2
+            "bodys": ["move", "move", "move", "work", "work", "work", "work", "work", "work", "work", "work", "carry", "carry" ],
+            "number": 1
         },
         {
             "role": "repairer",
             "bodys": ["move", "move", "move", "work", "work", "work", "carry", "carry", "carry"],
-            "number": 1
+            "number": 0
         },
         {
             "role": "defender",
             "bodys": ["move", "move", "move", "move", "move", "move", "move", "move", "move", "move",
                 "attack", "attack", "attack", "attack", "attack", "attack", "attack", "attack", "tough", 
                 "tough", "tough", "tough", "tough", "tough" ],
-            "number": 1
+            "number": 0
         }
     ]
 }

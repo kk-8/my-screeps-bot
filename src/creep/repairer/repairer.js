@@ -1,6 +1,6 @@
 import plan from "./plan.json"
+import { work_W7N13_repair } from "./W7N14/work_W7N13_repair";
 import { work_W7N14_repair } from "./W7N14/work_W7N14_repair";
-import { work_W7N14_upgrade } from "./W7N14/work_W7N14_upgrade";
 
 export const roleRepairer = {
     run: (creep) => {
@@ -24,8 +24,8 @@ function do_W7N14_job(creep) {
         case 'W7N14_repair':
             work_W7N14_repair(creep);
             break;
-        case 'W7N14_upgrade':
-            work_W7N14_upgrade(creep);
+        case 'W7N13_repair':
+            work_W7N13_repair(creep);
             break;
     }
 }

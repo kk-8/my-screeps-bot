@@ -26,15 +26,16 @@ function work_get(creep) {
 }
 //状态2-----------------
 function work_put(creep) {
-    if(creep.room.name == 'W7N13') {
-        const target = creep.pos.findClosestByRange(FIND_STRUCTURES, { filter: (s) => s.hits < s.hitsMax });
+    if (creep.room.name == 'W7N14') {
+        const target = creep.pos.findClosestByRange(FIND_STRUCTURES, { filter: 
+            (s) => s.structureType == STRUCTURE_RAMPART && s.hits < s.hitsMax/300 });
         if (creep.repair(target) == ERR_NOT_IN_RANGE) {
             creep.moveTo(target);
         }
 
         stateCheck('put', creep, target);
-    }else {
-        creep.moveTo(new RoomPosition(25, 25, 'W7N13'));
+    } else {
+        creep.moveTo(new RoomPosition(25, 25, 'W7N14'));
     }
 }
 //状态检查
@@ -43,13 +44,13 @@ function stateCheck(curState, creep, source) {
         case 'get':
             if (creep.store.getFreeCapacity() == 0) {
                 setState(creep, 'put');
-            } 
+            }
             break;
         case 'put':
             if (creep.store.getUsedCapacity() == 0) {
                 setState(creep, 'get');
             }else if (!source) {
-                setJob(creep, 'W7N14_upgrade');
+                setJob(creep, 'W7N13_repair');
             }
             break;
     }

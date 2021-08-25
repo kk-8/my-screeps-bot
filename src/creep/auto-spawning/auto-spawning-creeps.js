@@ -59,9 +59,9 @@ function newCreep(spawn, config) {
             memory: {
                 role: config.role,
                 room: spawn.room.name,
-                state: 'wait'
+                state: 'wait',
             },
-            // energyStructures: spawn.room.memory.energyStructures
+            energyStructures: spawn.room.memory.energyStructures
         });
 
     //所属房间creep数量加一

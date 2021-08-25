@@ -1,6 +1,5 @@
 import plan from "./plan.json"
 import { work_W7N14_store } from "./W7N14/work_W7N14_store"
-import { work_W7N13_store } from "./W7N14/work_W7N13_store";
 import { work_W7N14_guard } from "./W7N14/work_W7N14_guard";
 
 export const roleCarrier = {
@@ -25,9 +24,6 @@ function do_W7N14_job(creep) {
     switch (creep.memory.job) {
         case 'W7N14_store':
             work_W7N14_store(creep);
-            break;
-        case 'W7N13_store':
-            work_W7N13_store(creep);
             break;
         case 'W7N14_guard':
             work_W7N14_guard(creep);

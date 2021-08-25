@@ -6,9 +6,9 @@ export const roleTower = {
                 {
                 filter: (structure) => { 
                     return (
-                        ( structure.structureType == STRUCTURE_RAMPART && structure.hits < structure.hitsMax / 300 )
-                        || structure.structureType == STRUCTURE_ROAD
-                        || structure.structureType == STRUCTURE_STORAGE
+                        // ( structure.structureType == STRUCTURE_RAMPART && structure.hits < structure.hitsMax / 300 )
+                        //  structure.structureType == STRUCTURE_ROAD
+                         structure.structureType == STRUCTURE_STORAGE
                         || structure.structureType == STRUCTURE_TOWER
                         || structure.structureType == STRUCTURE_CONTAINER
                         || structure.structureType == STRUCTURE_SPAWN
